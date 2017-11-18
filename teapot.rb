@@ -25,6 +25,16 @@ define_target "vulkan-sdk" do |target|
 	target.provides "SDK/Vulkan"
 end
 
+define_target "vulkan-library" do |target|
+	target.depends "SDK/Vulkan"
+	
+	target.provides "Library/vulkan" do
+		append linkflags [
+			"-lvulkan"
+		]
+	end
+end
+
 define_configuration "test" do |configuration|
 	configuration[:source] = "https://github.com/kurocha/"
 	
