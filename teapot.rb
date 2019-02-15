@@ -3,7 +3,7 @@
 #  This file is part of the "Teapot" project, and is released under the MIT license.
 #
 
-teapot_version "1.0"
+teapot_version "3.0"
 
 define_project "vulkan-sdk" do |project|
 	project.add_author "Samuel Williams"
@@ -13,25 +13,21 @@ define_project "vulkan-sdk" do |project|
 end
 
 define_target "vulkan-sdk" do |target|
-	target.build do |environment|
-		source_root = target.package.path + 'source'
-		
-		copy headers: source_root.glob('vulkan/**/*.{h,hpp}')
-	end
-
 	target.depends :platform	
 	target.depends "Build/Files"
 	
-	target.provides "SDK/Vulkan"
+	target.provides "SDK/Vulkan" do
+		source_root = target.package.path + 'source'
+		
+		append header_search_paths source_root
+	end
 end
 
 define_target "vulkan-library" do |target|
-	target.depends "SDK/Vulkan"
+	target.depends "SDK/Vulkan", public: true
 	
 	target.provides "Library/vulkan" do
-		append linkflags [
-			"-lvulkan"
-		]
+		append linkflags "-lvulkan"
 	end
 end
 
