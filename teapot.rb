@@ -23,6 +23,16 @@ define_target "vulkan-sdk" do |target|
 	end
 end
 
+define_target 'vulkan-platform-xcb' do |target|
+	target.provides 'Vulkan/Platform/XCB' do
+		append buildflags "-DVK_USE_PLATFORM_XCB_KHR"
+		append linkflags %W{-lxcb -lvulkan}
+	end
+	
+	target.provides :vulkan_platform => 'Vulkan/Platform/XCB'
+end
+
+
 define_configuration "test" do |configuration|
 	configuration[:source] = "https://github.com/kurocha/"
 	
