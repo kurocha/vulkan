@@ -32,11 +32,9 @@ define_target 'vulkan-platform-xcb' do |target|
 	target.provides :vulkan_platform => 'Vulkan/Platform/XCB'
 end
 
-
 define_configuration "test" do |configuration|
 	configuration[:source] = "https://github.com/kurocha/"
 	
 	configuration.require "platforms"
 	configuration.require "build-files"
 end
-
