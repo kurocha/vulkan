@@ -28,10 +28,9 @@ jobs:
     
     - uses: kurocha/setup-cpp@master
     
-    - name: Install dependencies
-      if: ${{matrix.os}} == "ubuntu"
-      run: |
-        sudo apt-get install libvulkan1 mesa-vulkan-drivers vulkan-utils
+    - name: Installing packages (ubuntu)
+      if: matrix.os == 'ubuntu'
+      run: sudo apt-get install libvulkan1 mesa-vulkan-drivers vulkan-utils
 
     - name: Run tests
       timeout-minutes: 5
