@@ -12,16 +12,39 @@ define_project "vulkan-sdk" do |project|
 	project.version = "1.3.216"
 end
 
-define_target "vulkan-sdk" do |target|
+define_target "vulkan-sdk-library" do |target|
 	target.depends :platform	
+	target.depends "Build/Files"
+
+	target.depends :vulkan_library, public: true
+
+	target.provides "SDK/Vulkan/Library" do
+		source_root = target.package.path + 'source'
+		
+		append header_search_paths source_root
+	end
+end
+
+define_target "vulkan-sdk-platform" do |target|
+	target.depends :platform
 	target.depends "Build/Files"
 	
 	target.depends :vulkan_platform, public: true
 
-	target.provides "SDK/Vulkan" do
-		source_root = target.package.path + 'source'
+	target.provides "SDK/Vulkan"
+end
+
+define_target 'vulkan-sdk-test' do |target|
+	target.depends 'Language/C++17'
+	
+	target.depends 'Library/UnitTest'
+
+	target.depends 'SDK/Vulkan/Library'
+	
+	target.provides 'Test/SDK/Vulkan' do |*arguments|
+		test_root = target.package.path + 'test'
 		
-		append header_search_paths source_root
+		run source_files: test_root.glob('vulkan/**/*.cpp'), arguments: arguments
 	end
 end
 
@@ -30,10 +53,13 @@ end
 define_configuration 'development' do |configuration|
 	configuration[:source] = "https://github.com/kurocha"
 	configuration.import "vulkan-sdk"
-	
+
+	# Provides unit testing infrastructure and generators:
+	configuration.require 'unit-test'
+
 	# Provides all the build related infrastructure:
 	configuration.require 'platforms'
-	configuration.require "build-files"
+	configuration.require 'build-files'
 end
 
 define_configuration "vulkan-sdk" do |configuration|
