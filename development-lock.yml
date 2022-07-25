@@ -47,3 +47,12 @@ unit-test:
 streams:
   :commit: 2f9141de26e5331ab35fc91c03ab6a60317bbf7c
   :branch: master
+vulkan-sdk-linux:
+  :commit: ab8b1c686d1997df44d091131e94719001bb9fab
+  :branch: master
+platform-linux:
+  :commit: 3619b22cfc66fd0691a8e747d1c5d445ac4cb9a6
+  :branch: master
+build-linux:
+  :commit: 1d9e9a5ade9b5817dd9f5c2cb4f5f43883a64c66
+  :branch: master

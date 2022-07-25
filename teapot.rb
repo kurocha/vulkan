@@ -12,8 +12,16 @@ define_project "vulkan-sdk" do |project|
 	project.version = "1.3.216"
 end
 
-define_target "vulkan-sdk" do |target|
+define_target "vulkan-sdk-library" do |target|
 	target.depends :platform	
+	target.depends "Build/Files"
+
+	target.depends :vulkan_library, public: true
+	target.provides "SDK/Vulkan/Library"
+end
+
+define_target "vulkan-sdk-platform" do |target|
+	target.depends :platform
 	target.depends "Build/Files"
 	
 	target.depends :vulkan_platform, public: true
@@ -30,7 +38,7 @@ define_target 'vulkan-sdk-test' do |target|
 	
 	target.depends 'Library/UnitTest'
 
-	target.depends 'SDK/Vulkan'
+	target.depends 'SDK/Vulkan/Library'
 	
 	target.provides 'Test/SDK/Vulkan' do |*arguments|
 		test_root = target.package.path + 'test'
