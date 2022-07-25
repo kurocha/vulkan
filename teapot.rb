@@ -17,7 +17,12 @@ define_target "vulkan-sdk-library" do |target|
 	target.depends "Build/Files"
 
 	target.depends :vulkan_library, public: true
-	target.provides "SDK/Vulkan/Library"
+
+	target.provides "SDK/Vulkan/Library" do
+		source_root = target.package.path + 'source'
+		
+		append header_search_paths source_root
+	end
 end
 
 define_target "vulkan-sdk-platform" do |target|
@@ -26,11 +31,7 @@ define_target "vulkan-sdk-platform" do |target|
 	
 	target.depends :vulkan_platform, public: true
 
-	target.provides "SDK/Vulkan" do
-		source_root = target.package.path + 'source'
-		
-		append header_search_paths source_root
-	end
+	target.provides "SDK/Vulkan"
 end
 
 define_target 'vulkan-sdk-test' do |target|
