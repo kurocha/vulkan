@@ -9,13 +9,15 @@ define_project "vulkan-sdk" do |project|
 	project.add_author "Samuel Williams"
 	project.license = " Apache License, Version 2.0 / MIT License"
 
-	project.version = "1.0.39"
+	project.version = "1.3.216"
 end
 
 define_target "vulkan-sdk" do |target|
 	target.depends :platform	
 	target.depends "Build/Files"
 	
+	target.depends :vulkan_platform, public: true
+
 	target.provides "SDK/Vulkan" do
 		source_root = target.package.path + 'source'
 		
@@ -23,18 +25,29 @@ define_target "vulkan-sdk" do |target|
 	end
 end
 
-define_target 'vulkan-platform-xcb' do |target|
-	target.provides 'Vulkan/Platform/XCB' do
-		append buildflags "-DVK_USE_PLATFORM_XCB_KHR"
-		append linkflags %W{-lxcb -lvulkan}
-	end
+# Configurations
+
+define_configuration 'development' do |configuration|
+	configuration[:source] = "https://github.com/kurocha"
+	configuration.import "vulkan-sdk"
 	
-	target.provides :vulkan_platform => 'Vulkan/Platform/XCB'
+	# Provides all the build related infrastructure:
+	configuration.require 'platforms'
+	configuration.require "build-files"
 end
 
-define_configuration "test" do |configuration|
-	configuration[:source] = "https://github.com/kurocha/"
+define_configuration "vulkan-sdk" do |configuration|
+	configuration.public!
 	
-	configuration.require "platforms"
-	configuration.require "build-files"
+	configuration.require 'logger'
+	configuration.require 'units'
+	configuration.require 'memory'
+
+	host /linux/ do
+		configuration.require 'vulkan-sdk-linux'
+	end
+
+	host /darwin/ do
+		configuration.require 'vulkan-sdk-darwin'
+	end
 end
