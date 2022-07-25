@@ -2,6 +2,9 @@ name: Development
 
 on: [push, pull_request]
 
+env:
+  CONSOLE_OUTPUT: XTerm
+
 jobs:
   test:
     name: ${{matrix.ruby}} on ${{matrix.os}}
