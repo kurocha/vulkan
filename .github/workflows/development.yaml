@@ -35,5 +35,5 @@ jobs:
     - name: Run tests
       timeout-minutes: 5
       run: |
-        teapot fetch
-        teapot build Test/SDK/Vulkan
+        bundle exec teapot fetch
+        bundle exec teapot build Test/SDK/Vulkan
