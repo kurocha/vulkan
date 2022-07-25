@@ -19,10 +19,14 @@ UnitTest::Suite VulkanSDKTestSuite {
 			auto instance_create_info = vk::InstanceCreateInfo()
 				.setPApplicationInfo(&application_info);
 		
-			// We don't care if this succeeds or fails, just that the code compiles and it can execute.
-			auto instance = vk::createInstanceUnique(instance_create_info, nullptr);
-
-			examiner.expect(instance);
+			try {
+				// We don't care if this succeeds or fails, just that the code compiles and it can execute.
+				auto instance = vk::createInstanceUnique(instance_create_info, nullptr);
+				
+				examiner.check(!!instance);
+			} catch (vk::IncompatibleDriverError) {
+				// Ignore.
+			}
 		}
 	}
 };
