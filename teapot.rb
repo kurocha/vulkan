@@ -31,7 +31,11 @@ define_target "vulkan-platform" do |target|
 	
 	target.depends :vulkan_platform, public: true
 
-	target.provides "Platform/Vulkan"
+	target.provides "Platform/Vulkan" do
+		source_root = target.package.path + 'source'
+		
+		append header_search_paths source_root
+	end
 end
 
 define_target 'vulkan-test' do |target|
