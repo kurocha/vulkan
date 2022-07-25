@@ -36,4 +36,4 @@ jobs:
       timeout-minutes: 5
       run: |
         bundle exec teapot fetch
-        bundle exec teapot build Test/SDK/Vulkan
+        bundle exec teapot build Test/Vulkan
