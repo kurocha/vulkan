@@ -35,6 +35,5 @@ jobs:
     - name: Run tests
       timeout-minutes: 5
       run: |
-        gem install teapot
         teapot fetch
         teapot build Test/SDK/Vulkan
